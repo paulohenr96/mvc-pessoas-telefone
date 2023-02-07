@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+<style>
+body {
+	padding: 0 5% 0 5%;
+}
+</style>
+
+</head>
+
+<body>
+
+	<h5>Lista de Telefones</h5>
+	<div>
+		<p>
+			Nome: <span th:text="${pessoa.nome}"></span>
+		</p>
+		<p>
+			Sobrenome: <span th:text="${pessoa.sobrenome}"></span>
+		</p>
+
+	</div>
+
+	<a class="waves-effect waves-light btn" th:href="@{/}">Cadastro de
+		Usuario</a>
+
+	<form th:action="@{/novotelefone/{idpessoa}(idpessoa=${pessoa.id})}"
+		method="post">
+		<div class="row input-field col s3">
+
+			<label for="numero">Numero</label> <input type="text"
+				class="validate" name="numero" id="numero">
+		</div>
+		<div th:each="erro : ${erros}">
+
+			<span th:text="${erro}"></span>
+		</div>
+
+		<input type="submit" class="waves-effect waves-light btn"
+			value="Salvar">
+
+	</form>
+	<div th:if="${!telefones.isEmpty()}">
+	
+	
+	<table >
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NUMERO</th>
+				<th>REMOVER</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="telefone : ${telefones.content}">
+				<td th:text="${telefone.id}"></td>
+				<td th:text="${telefone.numero}"></td>
+				<td><a
+					th:href="@{removertelefone/{idtelefone} (idtelefone=${telefone.id})}">Remover</a></td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="row">
+		<center>
+			<a th:if="${telefones.hasPrevious()}" th:href="@{/telefonespag/{idpessoa} (page=${telefones.number-1},idpessoa=${pessoa.id})}">Voltar</a>
+			<th:block
+				th:each="i : ${#numbers.sequence(0,telefones.totalPages - 1)}">
+				<a
+					th:href="@{/telefonespag/{idpessoa} (page=${i},idpessoa=${pessoa.id})}">[[${i}+1]]</a>
+
+			</th:block>
+						<a th:if="${telefones.hasNext()}" th:href="@{/telefonespag/{idpessoa} (page=${telefones.number+1},idpessoa=${pessoa.id})}">Próximo</a>
+			
+		</center>
+	</div>
+	
+		</div>
+	
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+
+</html>

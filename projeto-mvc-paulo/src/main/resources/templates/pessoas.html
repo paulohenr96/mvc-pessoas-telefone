@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+<style>
+#formpessoa {
+	margin: 10px;
+}
+</style>
+</head>
+
+<body>
+	<form id="formpessoa" class="col s12" action="salvarpessoa"
+		method="POST">
+		<div class="row">
+
+			<div class="input-field col s4">
+				<label class="active" for="nome">Nome</label> <input type="text"
+					id="nome" name="nome">
+			</div>
+			<div class="input-field col s8">
+				<label class="active" for="sobrenome">Sobrenome</label> <input
+					type="text" name="sobrenome" id="sobrenome">
+			</div>
+		</div>
+		<div class="row">
+
+			<div class="input-field col s3">
+
+				<label class="active" for="idade">Idade</label> <input type="number"
+					name="idade" id="idade">
+			</div>
+			<div class="input-field col s3">
+
+				<label class="active" for="sexo">Sexo</label> <select
+					class="browser-default" id="sexo" name="sexo">
+					<option value="Masculino">Masculino</option>
+					<option value="Feminino">Feminino</option>
+				</select>
+			</div>
+		</div>
+
+		<input class="waves-effect waves-light btn" type="submit"
+			value="Cadastrar">
+	</form>
+
+
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NOME</th>
+				<th>SOBRENOME</th>
+				<th>IDADE</th>
+				<th>REMOVER</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="pessoa : ${pessoas.content}">
+				<td th:text="${pessoa.id}"></td>
+
+				<td><a
+					th:href="@{/telefones/{idpessoa} (idpessoa=${pessoa.id})}"><span
+						th:text="${pessoa.nome}"></span></a></td>
+				<td th:text="${pessoa.sobrenome}"></td>
+				<td th:text="${pessoa.idade}"></td>
+				<td><a
+					th:href="@{/removerpessoa/{idpessoa}(idpessoa=${pessoa.id})}">Remover</a></td>
+			</tr>
+
+
+
+		</tbody>
+	</table>
+	<div class="row">
+		<center>
+	
+		<a th:if="${pessoas.hasPrevious()}" th:href="@{/paginarpessoas (page=${pessoas.number - 1})}">Anterior</a>
+		<th:block th:each="i : ${#numbers.sequence(0,pessoas.totalPages -1)}">
+
+			<a th:href="@{/paginarpessoas (page=${i})}">[[${i}+1]]</a>
+
+
+		</th:block>
+		
+				<a th:if="${pessoas.hasNext()}" th:href="@{/paginarpessoas (page=${pessoas.number + 1})}">Próxima</a>
+		</center>
+	</div>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+</body>
+
+</html>
